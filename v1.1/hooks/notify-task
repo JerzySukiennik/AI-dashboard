@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# AI-dashboard — manual notify fallback.
+#
+# Usage:
+#   notify-task "<label>" [tool]
+#
+# Examples:
+#   notify-task "Deployed the worker"
+#   notify-task "Rendered final frames" "Blender"
+#
+# POSTs {tool: tool||"Manual", task: label} to the Worker /notify endpoint.
+# Prints a confirmation on success, an error otherwise.
+#
+# Placeholders __WORKER_URL__ / __NOTIFY_SECRET__ are substituted by the orchestrator.
+
+WORKER_URL="__WORKER_URL__"
+NOTIFY_SECRET="__NOTIFY_SECRET__"
+
+LABEL="$1"
+TOOL="${2:-Manual}"
+
+if [ -z "$LABEL" ]; then
+  echo "usage: notify-task \"<label>\" [tool]" >&2
+  exit 2
+fi
+
+if command -v jq >/dev/null 2>&1; then
+  BODY="$(jq -n --arg t "$LABEL" --arg tool "$TOOL" '{tool:$tool, task:$t}')"
+else
+  ESC_T="$(printf '%s' "$LABEL" | sed 's/\\/\\\\/g; s/"/\\"/g')"
+  ESC_TOOL="$(printf '%s' "$TOOL" | sed 's/\\/\\\\/g; s/"/\\"/g')"
+  BODY="{\"tool\":\"${ESC_TOOL}\",\"task\":\"${ESC_T}\"}"
+fi
+
+HTTP_CODE="$(curl -s --max-time 5 -o /dev/null -w '%{http_code}' \
+  -X POST "${WORKER_URL%/}/notify" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${NOTIFY_SECRET}" \
+  -d "$BODY" 2>/dev/null)"
+
+if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "204" ]; then
+  echo "notify-task: sent ✓  [$TOOL] $LABEL"
+  exit 0
+else
+  echo "notify-task: FAILED (HTTP ${HTTP_CODE:-no-response}) — check WORKER_URL / secret / network" >&2
+  exit 1
+fi
