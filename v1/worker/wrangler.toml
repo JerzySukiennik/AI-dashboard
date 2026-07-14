@@ -1,0 +1,15 @@
+name = "ai-dashboard"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+kv_namespaces = [
+  { binding = "AI_LIMITS_KV", id = "4fde39d2f68e4add89c4d97e1a6e6069" }
+]
+
+[vars]
+VAPID_SUBJECT = "mailto:gzowotesla@gmail.com"
+ALLOWED_ORIGIN = "https://jerzysukiennik.github.io"
+
+# Secrets (set via `wrangler secret put <NAME>`), not stored here:
+#   INGEST_SECRET, NOTIFY_SECRET, SUBSCRIBE_SECRET,
+#   VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY

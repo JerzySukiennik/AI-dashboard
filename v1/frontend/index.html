@@ -1,0 +1,63 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>AI Limits</title>
+<meta name="theme-color" content="#07080c" />
+<meta name="description" content="Live AI usage limits across your accounts." />
+
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="AI Limits" />
+
+<link rel="stylesheet" href="./styles.css" />
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
+      </svg>
+    </span>
+    <span class="brand-text">
+      <strong>AI&nbsp;Limits</strong>
+      <span class="brand-sub">usage across accounts</span>
+    </span>
+  </div>
+  <div class="topbar-actions">
+    <span class="sync" id="sync-indicator" title="Last sync">
+      <span class="sync-dot" id="sync-dot"></span>
+      <span class="sync-label" id="sync-label">connecting…</span>
+    </span>
+    <button class="btn-notify" id="notify-btn" type="button" hidden>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" />
+        <path d="M10 20a2 2 0 0 0 4 0" />
+      </svg>
+      <span id="notify-label">Enable notifications</span>
+    </button>
+  </div>
+</header>
+
+<div class="ios-banner" id="ios-banner" hidden>
+  <span class="ios-share" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 15V3" /><path d="m8 7 4-4 4 4" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" />
+    </svg>
+  </span>
+  <div class="ios-banner-text">
+    <strong>Włącz powiadomienia na iPhonie</strong>
+    <span>Udostępnij → Dodaj do ekranu głównego, potem otwórz aplikację z ekranu głównego.</span>
+  </div>
+</div>
+
+<main class="grid" id="grid" aria-live="polite"></main>
+
+<footer class="foot">
+  <span>Add an account by connecting it to the worker — new accounts appear here automatically.</span>
+</footer>
+
+<script type="module" src="./app.js"></script>
